@@ -1,1 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You, Ishu 💘</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fce4ec, #e1f5fe);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 20px;
+      flex-direction: column;
+    }
 
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 24px;
+      animation: floatUp 6s linear infinite;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(1); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 1.9em;
+      color: #d63384;
+      margin-bottom: 10px;
+    }
+
+    .gif {
+      width: 100%;
+      border-radius: 15px;
+      margin: 15px 0;
+    }
+
+    .type-line {
+      font-size: 1.1em;
+      color: #555;
+      min-height: 1.5em;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s ease;
+      color: white;
+    }
+
+    #yesBtn {
+      background: #ff69b4;
+    }
+    #yesBtn:hover {
+      background: #f54d9b;
+    }
+    #noBtn {
+      background: #90caf9;
+      position: relative;
+    }
+    #noBtn:hover {
+      background: #64b5f6;
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="mainBox">
+    <h1>For You, Ishu 💘</h1>
+    <img class="gif" src="yell-shy.gif" alt="confession gif" />
+    <div id="textLines"></div>
+    <div class="buttons">
+      <button id="yesBtn" onclick="sayYes()">Obviously, baby 💞</button>
+      <button id="noBtn" onclick="moveNo()">No 😢</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+
+    function moveNo() {
+      const container = document.querySelector('.container');
+      const maxX = container.offsetWidth - noBtn.offsetWidth - 30;
+      const maxY = container.offsetHeight - noBtn.offsetHeight - 30;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    function sayYes() {
+      document.body.innerHTML = `
+        <div class="container fade-in" style="background:#fce4ec;">
+          <h1>Yesss my love 💖</h1>
+          <img class="gif" src="hori-miya.gif" alt="hug gif" />
+          <p>Ishu, you're not just my girlfriend — you're my person, my peace, my home 💍</p>
+          <p>Forever is the only plan I have with you 💗</p>
+          <button onclick="window.open('https://www.instagram.com/vrd.cfg?igsh=MWI0dm0xcDI4ZzVueA==', '_blank')" style="margin-top: 20px; background: #e1306c; padding: 12px 20px; border: none; color: white; border-radius: 30px; font-weight: bold;">
+            Take me to Instagram 💕
+          </button>
+          <button id="playBtn" style="margin-top: 15px; background: #ff4081; padding: 10px 20px; border: none; color: white; border-radius: 25px; font-weight: bold;">🔊 Play our song</button>
+        </div>
+        <audio id="bgMusic" src="terevaaste.mp3" loop></audio>
+      `;
+
+      confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+      setInterval(spawnEmoji, 500);
+
+      const playBtn = document.getElementById("playBtn");
+      const music = document.getElementById("bgMusic");
+      playBtn.onclick = () => {
+        music.play().then(() => {
+          playBtn.remove();
+        }).catch(() => {
+          alert("Couldn’t play audio. Try again.");
+        });
+      };
+    }
+
+    const emojis = ["❤️", "🥰", "💍", "😘", "🌹", "💗"];
+    function spawnEmoji() {
+      const emoji = document.createElement("div");
+      emoji.className = "emoji";
+      emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      emoji.style.left = Math.random() * 100 + "vw";
+      emoji.style.fontSize = (20 + Math.random() * 15) + "px";
+      document.body.appendChild(emoji);
+      setTimeout(() => emoji.remove(), 6000);
+    }
+    setInterval(spawnEmoji, 500);
+
+    const lines = [
+      "Hey Ishu 💕",
+      "From the moment we started talking... everything felt different ✨",
+      "You're not just special — you're *everything* to me 🥺",
+      "So... will you be mine forever and always? 💍❤️"
+    ];
+
+    let currentLine = 0;
+
+    function typeNextLine() {
+      if (currentLine >= lines.length) return;
+      const lineDiv = document.createElement("div");
+      lineDiv.className = "type-line";
+      document.getElementById("textLines").appendChild(lineDiv);
+
+      let i = 0;
+      function typeChar() {
+        if (i < lines[currentLine].length) {
+          lineDiv.textContent += lines[currentLine].charAt(i);
+          i++;
+          setTimeout(typeChar, 40);
+        } else {
+          currentLine++;
+          setTimeout(typeNextLine, 400);
+        }
+      }
+      typeChar();
+    }
+
+    window.onload = typeNextLine;
+  </script>
+</body>
+</html>
